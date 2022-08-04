@@ -50,7 +50,7 @@ function FormCadastro () {
             <div className="top">
                 <h2>Kenzie Hub</h2>
                 <button>
-                    <Link replace to='/'>
+                    <Link to='/'>
                         Voltar
                     </Link>
                 </button>

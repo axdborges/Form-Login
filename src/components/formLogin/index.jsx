@@ -52,7 +52,7 @@ function FormLogin () {
             <div>
                 <p>Ainda não possui conta?</p>
                 <button className='cadastro' type='button'>
-                    <Link replace to='/cadastro'>
+                    <Link to='/cadastro'>
                         Cadastre-se
                     </Link>
                     </button>
