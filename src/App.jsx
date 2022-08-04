@@ -1,17 +1,14 @@
 import { GlobalStyle } from './styles'
-import FormLogin from './components/formLogin';
-import FormCadastro from './components/formCadastro';
+import Routes from './rotas/rotas';
 
 
 function App() {
 
   return (
-    <div className='container'>
+    <>
       <GlobalStyle/>
-      {/* <FormLogin/> */}
-      {/* <FormCadastro/> */}
-
-    </div>   
+      <Routes/>
+    </>   
   );
 }
 

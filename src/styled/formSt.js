@@ -19,7 +19,7 @@ export const FormSt = styled.div`
         border-radius: 0px;
         font-size: 18px;
         text-align: center;
-        color: var(--rosa-1);
+        color: var(--rosa-2);
     }
 
     form {
@@ -59,6 +59,8 @@ export const FormSt = styled.div`
     label{
         font-size: 12px;
         color: var(--cinza-4);
+        display: flex;
+        justify-content: space-between;
     }
 
     input{
@@ -70,6 +72,7 @@ export const FormSt = styled.div`
         padding: 0px, 13px, 0px, 13px;
         border: 1px solid var(--cinza-5);
         background-color: var(--cinza-3);
+        color: var(--cinza-5);
     }
 
     input::placeholder  {
@@ -160,6 +163,20 @@ export const FormSt = styled.div`
         height: 29.504066467285156px;
         width: 232.90243530273438px;
 
+    }
+
+    span {
+        color: var(--vermelho);
+    }
+
+    a {
+        color: var(--cinza-5);
+        text-decoration: none;
+    }
+
+    .senha-span{
+        font-size: 11px;
+        max-width: 230px;
     }
 
 `;
