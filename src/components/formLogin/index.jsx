@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import api from '../../services/api';
 import { useState } from 'react';
+import { toast} from 'react-toastify';
 
 function FormLogin () {
 
@@ -23,18 +24,26 @@ function FormLogin () {
 
     const submitFunction = (data) => {
         api.post('/sessions' , data)
-        .then(response => {
-           window.localStorage.clear();
-           window.localStorage.setItem("@token", response.data.token) 
-           setUserId(response.data.user.id)
-           localStorage.setItem("@userData", JSON.stringify(response.data.user))
-           window.localStorage.setItem("@userId", response.data.user.id)
-           navigate(`/dashboard/:${userId}`)
-        })
-        .catch(err => console.log(err))
+            .then(response => {
+            window.localStorage.clear();
+            window.localStorage.setItem("@token", response.data.token) 
+            setUserId(response.data.user.id)
+            localStorage.setItem("@userData", JSON.stringify(response.data.user))
+            window.localStorage.setItem("@userId", response.data.user.id)
+            
+            toast.success('Login feito com sucesso!')
+            navigate(`/dashboard/:${userId}`)
+            
+            })
+            .catch(err => {
+                toast.error('Email ou Senha incorretos')
+                console.log(err)
+            })
+        };
 
-        
-    };
+        const cadastro = () => {
+            navigate('/cadastro')
+        }
     return ( 
         <FormSt>
             <h2>Kenzie Hub</h2>
@@ -51,11 +60,9 @@ function FormLogin () {
             <button className='submit' type='submit'>Entrar</button>
             <div>
                 <p>Ainda não possui conta?</p>
-                <button className='cadastro' type='button'>
-                    <Link to='/cadastro'>
-                        Cadastre-se
-                    </Link>
-                    </button>
+
+                <button className='cadastro' type='button'
+                onClick={() => cadastro()}>Cadastre-se</button>
             </div>
             </form>
         </FormSt>

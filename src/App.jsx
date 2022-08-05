@@ -1,5 +1,7 @@
 import { GlobalStyle } from './styles'
 import Routes from './rotas/rotas';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function App() {
@@ -7,6 +9,17 @@ function App() {
   return (
     <>
       <GlobalStyle/>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <Routes/>
     </>   
   );

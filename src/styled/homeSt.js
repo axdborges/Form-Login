@@ -26,13 +26,14 @@ export  const HomeSt = styled.div`
             border-radius: 4px;
             padding: 0px, 16px, 0px, 16px;
             background-color: var(--cinza-2);
+            color: var(--cinza-5);
         }
 
         border-bottom: solid 3px var(--cinza-2)
     }
 
     a {
-        color: var(--cinza-5);
+        
         text-decoration: none;
     }
 

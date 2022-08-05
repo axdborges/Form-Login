@@ -1,19 +1,23 @@
-import { HomeSt } from '../../styled/homeSt'
-import { Link } from 'react-router-dom'
+import { HomeSt } from '../../styled/homeSt';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 
 function Home () {
-
+    const navigate = useNavigate()
     const userData = JSON.parse(localStorage.getItem("@userData"))
     console.log(userData)
+
+    const voltar = () => {
+        localStorage.clear()
+        navigate('/')
+        toast.success('Logout feito com sucesso!')
+    }
     return (
         <HomeSt>
             <header>
                 <h3>Kenzie Hub</h3>
-                <button>
-                    <Link to="/">
-                        Voltar
-                    </Link>
-                </button>
+                <button onClick={() => voltar()}>Voltar</button>
             </header>
             <section>
                 <h4>Olá, {userData.name}</h4>

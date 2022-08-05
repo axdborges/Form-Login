@@ -4,7 +4,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import api from '../../services/api'
+import api from '../../services/api';
+import { toast } from 'react-toastify';
 
 
 function FormCadastro () {
@@ -39,21 +40,22 @@ function FormCadastro () {
         }
         api.post('/users', cadastro).then(response => {
             console.log(response)
+            toast.success('Cadastro feito com sucesso!')
             navigate(`/`)
         })
         .catch(err => console.log(err))
         
-    };    
+    };   
+    
+    const voltar = () => {
+        navigate('/')
+    }
 
     return ( 
         <FormSt>
             <div className="top">
                 <h2>Kenzie Hub</h2>
-                <button>
-                    <Link to='/'>
-                        Voltar
-                    </Link>
-                </button>
+                <button onClick={() => voltar()}> Voltar</button>
             </div>
             <form action="" className='form-cadastro' onSubmit={handleSubmit(submitFunction)}> 
                 <h4>Crie sua Conta</h4>
