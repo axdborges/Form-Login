@@ -8,7 +8,7 @@ function Rotas () {
         <Routes>
             <Route path='/' element={<FormLogin/>} />               
             <Route path='/cadastro' element={<FormCadastro/>} />
-            <Route path='/dashboard/:id' element={<Home/>} />
+            <Route path='/dashboard' element={<Home/>} />
             <Route path='*' element={<Navigate replace to='/'/>} /> 
         </Routes>
     )

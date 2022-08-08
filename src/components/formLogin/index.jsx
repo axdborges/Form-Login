@@ -32,7 +32,7 @@ function FormLogin () {
             window.localStorage.setItem("@userId", response.data.user.id)
             
             toast.success('Login feito com sucesso!')
-            navigate(`/dashboard/:${userId}`)
+            navigate(`/dashboard`)
             
             })
             .catch(err => {
