@@ -3,14 +3,16 @@ import * as yup from 'yup';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import api from '../../services/api';
 import { toast } from 'react-toastify';
+import { BotaoAddContext } from '../../contexts/addTechContext';
 
 
 function FormCadastro () {
 
     const navigate = useNavigate()
+    const { botaoCadastro, setBotaoCadastro } = useContext(BotaoAddContext)
 
     const formSchema = yup.object().shape({
         name: yup.string().required("Nome Obrigatório"),
@@ -41,13 +43,14 @@ function FormCadastro () {
         api.post('/users', cadastro).then(response => {
             console.log(response)
             toast.success('Cadastro feito com sucesso!')
-            navigate(`/`)
+            voltar()
         })
         .catch(err => console.log(err))
         
     };   
     
     const voltar = () => {
+        setBotaoCadastro(false)
         navigate('/')
     }
 

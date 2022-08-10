@@ -10,7 +10,7 @@ import api from '../../services/api';
 
 const ModalEdita = () => {
 
-    const { botaoEdit, setBotaoEdit, idAtual } = useContext(BotaoAddContext)
+    const { botaoEdit, setBotaoEdit, idAtual, placeholder } = useContext(BotaoAddContext)
     const token = localStorage.getItem("@token")
 
     function ativaEdita () {
@@ -71,7 +71,7 @@ const ModalEdita = () => {
                     <label htmlFor="">Nome do projeto</label>
                     <span style={span}>{errors.status?.message}</span>
                 </div>
-                <input type="text" />
+                <input type="text" placeholder={placeholder} value={placeholder}/>
                 <label htmlFor="">Status</label>
                 <select name="" id=""  {...register("status")}>
                     <option value="Iniciante">iniciante</option>

@@ -8,10 +8,12 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useContext } from 'react';
 import { LoginContext } from '../../contexts/loginContext/index'
+import { BotaoAddContext } from '../../contexts/addTechContext';
 
 function FormLogin () {
 
     const { setUser, setUserId } = useContext(LoginContext)
+    const { setBotaoCadastro } = useContext(BotaoAddContext)
     
     const navigate = useNavigate()
 
@@ -47,6 +49,7 @@ function FormLogin () {
     }
 
     const cadastro = () => {
+        setBotaoCadastro(true)
         navigate('/cadastro')
     }
     

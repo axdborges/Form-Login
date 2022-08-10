@@ -17,7 +17,7 @@ function Home () {
     const userData = JSON.parse(localStorage.getItem("@userData"))
 
     const { user , setUser, setLoading, loading } = useContext(LoginContext)
-    const { botaoAdd, setBotaoAdd, botaoEdit, setBotaoEdit, idAtual, setId } = useContext(BotaoAddContext)
+    const { botaoAdd, setBotaoAdd, botaoEdit, setBotaoEdit, idAtual, setId, setPlaceholder } = useContext(BotaoAddContext)
     const [techs, setTechs] = useState([])
     
     useEffect(() => {
@@ -49,12 +49,20 @@ function Home () {
         setBotaoAdd(true)
     }
 
-    function ativaEdita (id) {
+    function ativaEdita (id, placeholder) {
         setBotaoEdit(true)
         setId(id)
+        setPlaceholder(placeholder)
     }
 
-    if(loading) return <div>Carregando...</div>
+    if(loading) return (
+    <div>Carregando...</div>,
+        !user &&
+          setTimeout(() => {
+            setLoading(false)
+        }, 2000)
+        
+    )
 
     if(user) {
         return (
@@ -77,7 +85,7 @@ function Home () {
                             techs.map((item,index) => {
                                 return (
                                     <div className="tech" key={index} id={item.id}
-                                    onClick={() => ativaEdita(item.id)}>
+                                    onClick={() => ativaEdita(item.id, item.title)}>
                                         <h6>{item.title}</h6>
                                         <div className="botao">
                                             <p>{item.status}</p>
