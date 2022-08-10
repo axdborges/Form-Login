@@ -1,15 +1,17 @@
-import { FormSt } from '../../styled/formSt'
+import { FormSt } from '../../styled/formSt';
 import * as yup from 'yup';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Link, Navigate, useNavigate } from 'react-router-dom'
 import api from '../../services/api';
 import { useState } from 'react';
-import { toast} from 'react-toastify';
+import { toast } from 'react-toastify';
+import { useContext } from 'react';
+import { LoginContext } from '../../contexts/loginContext/index'
 
 function FormLogin () {
 
-    const [userId, setUserId] = useState("")
+    const { setUser, setUserId } = useContext(LoginContext)
     
     const navigate = useNavigate()
 
@@ -24,26 +26,30 @@ function FormLogin () {
 
     const submitFunction = (data) => {
         api.post('/sessions' , data)
-            .then(response => {
-            window.localStorage.clear();
-            window.localStorage.setItem("@token", response.data.token) 
-            setUserId(response.data.user.id)
-            localStorage.setItem("@userData", JSON.stringify(response.data.user))
-            window.localStorage.setItem("@userId", response.data.user.id)
-            
-            toast.success('Login feito com sucesso!')
-            navigate(`/dashboard`)
-            
-            })
-            .catch(err => {
-                toast.error('Email ou Senha incorretos')
-                console.log(err)
-            })
-        };
+        .then(response => {
+        localStorage.clear();
+        localStorage.setItem("@token", response.data.token) 
+        setUserId(response.data.user.id)
+        setUser(response.data.user)
+        localStorage.setItem("@userData", JSON.stringify(response.data.user))
+        localStorage.setItem("@userId", response.data.user.id)
+        
+        toast.success('Login feito com sucesso!')
+        navigate(`/dashboard`)
+        
+        })
+        .catch(err => {
+            toast.error('Email ou Senha incorretos')
+            localStorage.clear()
+            console.log(err)
+        })
+        
+    }
 
-        const cadastro = () => {
-            navigate('/cadastro')
-        }
+    const cadastro = () => {
+        navigate('/cadastro')
+    }
+    
     return ( 
         <FormSt>
             <h2>Kenzie Hub</h2>

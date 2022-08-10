@@ -129,4 +129,22 @@ export  const HomeSt = styled.div`
         }
     }
 
+    .botao {
+        display: flex;
+        gap: 10px;
+
+        button {
+            background-color: var(--cinza-2);
+            color: var(--cinza-5);
+            cursor: pointer;
+            display:flex; 
+            align-items: center;
+
+            svg {
+                width: 14px;
+                height: 14px;
+            }
+        }
+    }
+
 `;  
