@@ -5,12 +5,15 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'react-toastify';
 import api from '../../services/api';
+import { AxiosError, AxiosResponse } from 'axios'
 
-
+interface IData {
+    status: string
+}
 
 const ModalEdita = () => {
 
-    const { botaoEdit, setBotaoEdit, idAtual, placeholder } = useContext(BotaoAddContext)
+    const { setBotaoEdit, idAtual, placeholder } = useContext(BotaoAddContext)
     const token = localStorage.getItem("@token")
 
     function ativaEdita () {
@@ -21,31 +24,43 @@ const ModalEdita = () => {
         status: yup.string().required("Informe a tecnologia")
     });
 
-    const { register, handleSubmit, formState: {errors}, } = useForm({
+    const { register, handleSubmit, formState: {errors}, } = useForm<IData>({
         resolver: yupResolver(schema),
     });
     
-    const submitEditar = (data) => {
-        console.log(data)
-        api.defaults.headers.authorization = `Bearer ${token}`
-        api.put(`/users/techs/${idAtual}` , data)
-        .then(response => {
+    const submitEditar = (data: IData) => {
+
+        const headers = {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        // console.log(data)
+        // api.defaults.headers.authorization<HeadersDefaults> = `Bearer ${token}`
+        api.put(`/users/techs/${idAtual}` , data, headers)
+        .then((response: AxiosResponse) => {
         toast.success('Tecnologia Editada')
         ativaEdita()
+        console.log(response)
         })
-        .catch(err => {
+        .catch((err: AxiosError) => {
         // toast.error(`${err.message}`) 
         console.log(err)}) 
     };
 
     const excluirTech = () => {
-        api.defaults.headers.authorization = `Bearer ${token}`
-        api.delete(`/users/techs/${idAtual}`)
-        .then(response => {
+        const headers = {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        // api.defaults.headers.authorization = `Bearer ${token}`
+        api.delete(`/users/techs/${idAtual}`, headers)
+        .then((response: AxiosResponse) => {
         toast.success('Tecnologia Excluída')
         ativaEdita()
         })
-        .catch(err => {
+        .catch((err: AxiosError) => {
         // toast.error(`${err.message}`) 
         console.log(err)})
     };
@@ -73,14 +88,14 @@ const ModalEdita = () => {
                 </div>
                 <input type="text" placeholder={placeholder} value={placeholder}/>
                 <label htmlFor="">Status</label>
-                <select name="" id=""  {...register("status")}>
+                <select id=""  {...register("status")}>
                     <option value="Iniciante">iniciante</option>
                     <option value="Intermediario">intermediário</option>
                     <option value="Avançado">Avançado</option>
                 </select>
                 <div className="botoes">
                     <button type='submit' className="salvar"> Salvar alterações</button>
-                    <button type="click" className="excluir"
+                    <button type="button" className="excluir"
                     onClick={() => excluirTech()}>Excluir</button>
                 </div>
             </form>

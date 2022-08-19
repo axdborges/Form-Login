@@ -2,13 +2,20 @@ import { FormSt } from '../../styled/formSt';
 import * as yup from 'yup';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import api from '../../services/api';
-import { useState } from 'react';
+import { AxiosError, AxiosResponse } from 'axios'
+// import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useContext } from 'react';
 import { LoginContext } from '../../contexts/loginContext/index'
 import { BotaoAddContext } from '../../contexts/addTechContext';
+
+interface IData {
+    email:    string
+    password: string
+}
+
 
 function FormLogin () {
 
@@ -22,13 +29,13 @@ function FormLogin () {
         password: yup.string().required("Senha obrigatória"),
     });
 
-    const { register, handleSubmit, formState: {errors}, } = useForm({
+    const { register, handleSubmit, formState: {errors}, } = useForm<IData>({
         resolver: yupResolver(schema),
     });
 
-    const submitFunction = (data) => {
+    const submitFunction = (data: IData) => {
         api.post('/sessions' , data)
-        .then(response => {
+        .then((response: AxiosResponse) => {
         localStorage.clear();
         localStorage.setItem("@token", response.data.token) 
         setUserId(response.data.user.id)
@@ -40,7 +47,7 @@ function FormLogin () {
         navigate(`/dashboard`)
         
         })
-        .catch(err => {
+        .catch((err: AxiosError) => {
             toast.error('Email ou Senha incorretos')
             localStorage.clear()
             console.log(err)

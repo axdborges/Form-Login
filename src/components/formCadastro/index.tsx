@@ -2,17 +2,27 @@ import { FormSt } from '../../styled/formSt'
 import * as yup from 'yup';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
 import api from '../../services/api';
+import { AxiosError, AxiosResponse } from 'axios'
 import { toast } from 'react-toastify';
 import { BotaoAddContext } from '../../contexts/addTechContext';
 
+interface IData {
+    name:            string
+    email:           string
+    password:        string
+    passwordConfirm: string
+    bio:             string
+    contact:         string
+    course_module:   string
+}
 
 function FormCadastro () {
 
     const navigate = useNavigate()
-    const { botaoCadastro, setBotaoCadastro } = useContext(BotaoAddContext)
+    const { setBotaoCadastro } = useContext(BotaoAddContext)
 
     const formSchema = yup.object().shape({
         name: yup.string().required("Nome Obrigatório"),
@@ -27,11 +37,11 @@ function FormCadastro () {
         course_module: yup.string().required("Módulo obrigatório"),
     });
 
-    const { register, handleSubmit, formState: {errors}, } = useForm({
+    const { register, handleSubmit, formState: {errors}, } = useForm<IData>({
         resolver: yupResolver(formSchema),
     });
     
-    const submitFunction = (data) => {
+    const submitFunction = (data: IData) => {
         const cadastro = {
             email: data.email,
             password: data.password,
@@ -40,12 +50,12 @@ function FormCadastro () {
             contact: data.contact,
             course_module: data.course_module
         }
-        api.post('/users', cadastro).then(response => {
+        api.post('/users', cadastro).then((response: AxiosResponse )=> {
             console.log(response)
             toast.success('Cadastro feito com sucesso!')
             voltar()
         })
-        .catch(err => console.log(err))
+        .catch((err: AxiosError) => console.log(err))
         
     };   
     
@@ -85,12 +95,12 @@ function FormCadastro () {
                     <input type="text" placeholder='Fale sobre você' {...register("bio")}/>
                 </div>
                 <div className='input-cadastro'>
-                    <label htmlFor="">Contato  <span>{errors.contact?.message} </span></label>
+                    <label htmlFor="">Contato  <span>{errors.contact?.message}</span></label>
                     <input type="text" placeholder='Opções de contato' {...register("contact")}/>
                 </div>
                 <div className='input-cadastro'>
-                    <label htmlFor="">Selecionar Módulo <span>{errors.course_module?.message} </span></label>
-                    <select name="modulos" id="" {...register("course_module")}>
+                    <label htmlFor="">Selecionar Módulo <span>{errors.course_module?.message}</span></label>
+                    <select id="" {...register("course_module")}>
                         <option value="primeiro modulo">Primeiro módulo</option>
                         <option value="segundo modulo">Segundo módulo</option>
                         <option value="terceiro modulo">Terceiro módulo</option>

@@ -5,6 +5,12 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import { toast } from 'react-toastify';
 import api from '../../services/api';
+import { AxiosError, AxiosResponse } from 'axios'
+
+interface IData {
+    title:  string
+    status: string
+}
 
 const ModalCa = () => {
 
@@ -15,19 +21,24 @@ const ModalCa = () => {
         title: yup.string().required("Insira uma Tecnologia")
     });
 
-    const { register, handleSubmit, formState: {errors}, } = useForm({
+    const { register, handleSubmit, formState: {errors}, } = useForm<IData>({
         resolver: yupResolver(schema),
     });
 
-    const submitFunction = (data) => {
-        api.defaults.headers.authorization = `Bearer ${token}`
-        api.post('/users/techs' , data)
-        .then(response => {
+    const submitFunction = (data: IData) => {
+        const headers = {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        // api.defaults.headers.authorization = `Bearer ${token}`
+        api.post('/users/techs' , data, headers)
+        .then((response: AxiosResponse) => {
         toast.success('Tecnologia cadastrada')
         console.log(response)
         ativaCadastro()
         })
-        .catch(err => {
+        .catch((err: AxiosError) => {
         toast.error(`${err.message}`) 
         console.log(err)})
         
@@ -60,7 +71,7 @@ const ModalCa = () => {
                 </div> 
                 <input type="text" {...register("title")}/>
                 <label htmlFor="">Selecionar status</label>
-                <select name="" id="" {...register("status")}>
+                <select id="" {...register("status")}>
                     <option value="iniciante">iniciante</option>
                     <option value="intermediario">intermediário</option>
                     <option value="avançado">Avançado</option>

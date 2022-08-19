@@ -1,25 +1,35 @@
 import { HomeSt } from '../../styled/homeSt';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { CgPlayListAdd } from 'react-icons/cg';
 import { BsTrash } from 'react-icons/bs';
 import { ModalSt } from '../modalSt/style';
 import { useState, useEffect } from 'react'
 import ModalCa from '../modalCadastro';
-import { set } from 'react-hook-form';
+// import { set } from 'react-hook-form';
 import ModalEdita from '../modalEdit';
 import { useContext } from 'react';
 import { LoginContext } from '../../contexts/loginContext';
 import { BotaoAddContext } from '../../contexts/addTechContext';
 import api from '../../services/api';
 
-function Home () {
-    const userData = JSON.parse(localStorage.getItem("@userData"))
+interface ITechs {
+    created_at: Date
+    id: string
+    status: string
+    title: string
+    updated_at: Date
+}
 
+function Home () {
+    
     const { user , setUser, setLoading, loading } = useContext(LoginContext)
     const { botaoAdd, setBotaoAdd, botaoEdit, setBotaoEdit, idAtual, setId, setPlaceholder } = useContext(BotaoAddContext)
-    const [techs, setTechs] = useState([])
+    const [techs, setTechs] = useState<ITechs[]>([])
+
+    const userData = JSON.parse(localStorage.getItem("@userData") || '{}')
     
+
     useEffect(() => {
 
        const idUser = localStorage.getItem("@userId")
@@ -28,6 +38,7 @@ function Home () {
        function confere () {
         api.get(`/users/${idUser}`).then(res => {
             setTechs(res.data.techs)
+            // console.log(res.data.techs)
             setUser(res.data)
             setLoading(false)
         }).catch(err => {console.log(err)})
@@ -41,7 +52,7 @@ function Home () {
 
     const voltar = () => {
         localStorage.clear()
-        setUser(null)
+        setUser(undefined)
         toast.success('Logout feito com sucesso!')
     }
 
@@ -49,19 +60,23 @@ function Home () {
         setBotaoAdd(true)
     }
 
-    function ativaEdita (id, placeholder) {
+    function ativaEdita (id: string, placeholder: string) {
         setBotaoEdit(true)
         setId(id)
         setPlaceholder(placeholder)
     }
 
+    // console.log(user)
+
     if(loading) return (
-    <div>Carregando...</div>,
-        !user &&
-          setTimeout(() => {
-            setLoading(false)
-        }, 2000)
-        
+        <>
+            <div>Carregando...</div>
+         {!user &&
+            setTimeout(() => {
+                setLoading(false)
+            }, 2000)}
+
+        </>
     )
 
     if(user) {
